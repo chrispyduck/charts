@@ -3,7 +3,30 @@ entries:
   mosquitto:
   - apiVersion: v1
     appVersion: 2.0.4
-    created: "2020-12-27T14:31:04.362845-05:00"
+    created: "2020-12-27T20:35:06.468802-05:00"
+    description: Eclipse Mosquitto - An open source MQTT broker
+    digest: 0c996d87a7a637e5150b3d6f8c69859d966b26e7b12e4f4498304a35fadd87ae
+    home: https://mosquitto.org/
+    icon: https://mosquitto.org/images/mosquitto-text-side-28.png
+    keywords:
+    - message queue
+    - MQTT
+    - mosquitto
+    - eclipse-iot
+    maintainers:
+    - email: helm@gavinmogan.com
+      name: Gavin Mogan
+    - email: chris@compucounts.com
+      name: Chris Carlson
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    urls:
+    - mosquitto-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v1
+    appVersion: 2.0.4
+    created: "2020-12-27T20:35:06.467009-05:00"
     description: Eclipse Mosquitto - An open source MQTT broker
     digest: c2f96e0460f5f680641d5c66f27c44ecb82c4789510e0e3a9f3f6d6c87c869ab
     home: https://mosquitto.org/
@@ -22,6 +45,6 @@ entries:
     sources:
     - https://github.com/eclipse/mosquitto
     urls:
-    - https://chrispyduck.github.io/charts/mosquitto-0.3.0.tgz
+    - mosquitto-0.3.0.tgz
     version: 0.3.0
-generated: "2020-12-27T14:31:04.361893-05:00"
+generated: "2020-12-27T20:35:06.465808-05:00"
