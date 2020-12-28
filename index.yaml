@@ -3,6 +3,29 @@ entries:
   mosquitto:
   - apiVersion: v1
     appVersion: 2.0.4
+    created: "2020-12-28T20:25:34.450574662Z"
+    description: Eclipse Mosquitto - An open source MQTT broker
+    digest: 7dffe6ece7f396f04b867c371038ce50dfbc0730579db12557a43380e0eb2508
+    home: https://mosquitto.org/
+    icon: https://mosquitto.org/images/mosquitto-text-side-28.png
+    keywords:
+    - message queue
+    - MQTT
+    - mosquitto
+    - eclipse-iot
+    maintainers:
+    - email: helm@gavinmogan.com
+      name: Gavin Mogan
+    - email: chris@compucounts.com
+      name: Chris Carlson
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    urls:
+    - https://github.com/chrispyduck/charts/releases/download/mosquitto-0.3.5/mosquitto-0.3.5.tgz
+    version: 0.3.5
+  - apiVersion: v1
+    appVersion: 2.0.4
     created: "2020-12-27T21:05:12.960475-05:00"
     description: Eclipse Mosquitto - An open source MQTT broker
     digest: 0b79d0bc5bdccd45f8b6b5222249ba0a1e309baff18e53c7efd652b7e04d0191
@@ -116,4 +139,26 @@ entries:
     urls:
     - mosquitto-0.3.0.tgz
     version: 0.3.0
+  openhab-dashboard:
+  - apiVersion: v2
+    appVersion: 0.2.0
+    created: "2020-12-28T20:25:34.527001507Z"
+    description: A touch friendly (and hopefully less buggy) OpenHAB dashboard based on Material UI and React
+    digest: 07b812eaf91580e333f5beb436b68320b3b20c887e0a7fca6a51af76179f6681
+    name: openhab-dashboard
+    type: application
+    urls:
+    - https://github.com/chrispyduck/charts/releases/download/openhab-dashboard-0.2.0/openhab-dashboard-0.2.0.tgz
+    version: 0.2.0
+  sensors:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2020-12-28T20:25:34.590057009Z"
+    description: A Helm chart for the publish-local-sensors tool
+    digest: a88cd8b79ca99a514a2a6e149e11f3d4a36342a8fc998641ece44be8123b44a2
+    name: sensors
+    type: application
+    urls:
+    - https://github.com/chrispyduck/charts/releases/download/sensors-1.0.0/sensors-1.0.0.tgz
+    version: 1.0.0
 generated: "2020-12-27T21:05:12.954156-05:00"
