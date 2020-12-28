@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mosquitto.fullname" . }}
+  labels:
+{{ include "mosquitto.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mosquitto.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "mosquitto.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ template "mosquitto.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ tpl .Values.image.tag . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: default
+              containerPort: {{ .Values.config.listeners.default.port }}
+              protocol: TCP
+            {{- range .Values.config.listeners.additional }}
+            - name: {{ .protocol }}-{{ .port }}
+              containerPort: {{ .port }}
+              protocol: TCP
+            {{- end }}
+          livenessProbe:
+            tcpSocket:
+              port: default
+          readinessProbe:
+            tcpSocket:
+              port: default
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: configmap
+              mountPath: {{ .Values.config.paths.config }}/mosquitto.conf
+              subPath: mosquitto.conf
+            {{- if .Values.config.security.acl.enable }}
+            - name: configmap
+              mountPath: {{ .Values.config.paths.config }}/acl.conf
+              subPath: acl.conf
+            {{- end }}
+            {{- if .Values.config.security.password }} 
+            - name: configmap
+              mountPath: {{ .Values.config.paths.includes }}/mosquitto.passwd
+              subPath: mosquitto.passwd
+            {{- end }}
+            - name: configmap
+              mountPath: {{ .Values.config.paths.includes }}/listeners.conf
+              subPath: listeners.conf
+            - name: configmap
+              mountPath: {{ .Values.config.paths.includes }}/auth.conf
+              subPath: auth.conf
+            - name: configmap
+              mountPath: {{ .Values.config.paths.includes }}/persistence.conf
+              subPath: persistence.conf
+            - name: configmap
+              mountPath: {{ .Values.config.paths.includes }}/logging.conf
+              subPath: logging.conf
+      volumes:
+        - name: configmap
+          configMap:
+            name: {{ template "mosquitto.fullname" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

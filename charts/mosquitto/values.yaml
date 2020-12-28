@@ -1,0 +1,84 @@
+replicaCount: 1
+
+image:
+  repository: eclipse-mosquitto
+  tag: "{{ .Chart.AppVersion }}"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+config:
+  paths:
+    config: /mosquitto/config
+    includes: /mosquitto/config.d
+
+  security:
+    # whether to permit anonymous connections
+    anonymous: false
+
+    # configures password authentication
+    password: 
+      # whether to enable the use of passwords and the mosquitto.passwd file
+      enable: true
+
+      # password file entries represented as an array
+      entries: []
+
+    # configures global ACL
+    acl: 
+      # if true, the acls.conf file will be emitted 
+      enable: false
+      # an array of lines for the acl.conf file
+      rules: []
+
+  listeners:
+    default: 
+      port: 1883
+      protocol: mqtt
+    
+    additional:
+      - port: 9001
+        protocol: websockets
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext:
+  fsGroup: 1883
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1883
+  runAsGroup: 1883
+
+service:
+  type: ClusterIP
+  annotations: []
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

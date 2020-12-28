@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mosquitto.fullname" . }}
+  labels:
+{{ include "mosquitto.labels" . | indent 4 }}
+data:
+  mosquitto.conf: |- 
+    {{- if .Values.config.security.acl.enable }}
+    acl_file {{ .Values.config.paths.config }}/acl.conf
+    {{- end }}
+    include_dir {{ .Values.config.paths.includes }}
+    
+  {{ if .Values.config.security.password -}} 
+  mosquitto.passwd: |-
+    {{- range .Values.config.security.password.entries }}
+    {{ . }}
+    {{- end }}
+  {{- end }}
+
+  listeners.conf: |-
+    listener {{ .Values.config.listeners.default.port }}
+    protocol {{ .Values.config.listeners.default.protocol }}
+
+    {{- range .Values.config.listeners.additional }}
+    listener {{ .port }}
+    protocol {{ .protocol | default "mqtt" }}
+    {{- end }}
+
+  auth.conf: |-
+    allow_anonymous {{ .Values.config.security.anonymous }}
+    
+    {{- if .Values.config.security.password.enable }} 
+    password_file {{ .Values.config.paths.includes }}/mosquitto.passwd
+    {{- end }}
+
+  {{- if .Values.config.security.acl.enable }}
+  acl.conf: |-
+    {{- range .Values.config.security.acl.rules }}
+    {{ . }}
+    {{- end }}
+  {{- end }}
+
+  persistence.conf: |-
+    #autosave_interval 1800
+    #autosave_on_changes false
+    #persistence false
+    #persistence_file mosquitto.db
+    #persistence_location
+
+  logging.conf: |-
+    log_dest stdout
+
+    log_type error
+    log_type warning
+    log_type notice
+    log_type information
+    log_type websockets
+    
+    log_timestamp true
+    log_timestamp_format %Y-%m-%dT%H:%M:%S
+
+    connection_messages true
+  
+    #websockets_log_level 0

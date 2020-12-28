@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mosquitto.fullname" . }}
+  labels:
+{{ include "mosquitto.labels" . | indent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if .Values.service.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  {{- end }}
+  {{- if .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - port: {{ .Values.config.listeners.default.port }}
+      targetPort: default
+      protocol: TCP
+      name: {{ .Values.config.listeners.default.protocol }}
+    {{- range .Values.config.listeners.additional }}
+    - port: {{ .port }}
+      targetPort: {{ .protocol }}-{{ .port }}
+      protocol: TCP
+      name: {{ .protocol }}-{{ .port }}
+    {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ include "mosquitto.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
