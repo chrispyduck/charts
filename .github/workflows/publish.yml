@@ -50,6 +50,15 @@ jobs:
       - name: Run chart-testing (install)
         run: ct install --target-branch main
           
+      - name: Release Charts
+        run: |
+          changed=$(ct list-changed --target-branch main)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+          fi
+        env:
+           CHANGED: "${{ steps.list-changed.outputs.changed }}"
+
       - name: Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.1.0
         with:
