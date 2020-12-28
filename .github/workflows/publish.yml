@@ -3,9 +3,8 @@ name: CI
 on:
   push:
     branches:
-      - '**'
-    tags:
-      - 'v*'
+      - main
+      - master
   pull_request:
     
   workflow_dispatch:
@@ -30,18 +29,13 @@ jobs:
 
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.0.1
-
-      - name: Create kind cluster
-        uses: helm/kind-action@v1.0.0-alpha.3
         with:
-          install_local_path_provisioner: false
-        # Only build a kind cluster if there are chart changes to test.
-        if: steps.lint.outputs.changed == 'true'
+          target-branch: main
 
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed)
+          changed=$(ct list-changed --target-branch main)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
@@ -51,6 +45,8 @@ jobs:
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.0.0
+        with:
+          install_local_path_provisioner: false
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
