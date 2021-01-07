@@ -5,4 +5,7 @@ metadata:
   labels:
     {{- include "openhab-dashboard.labels" . | nindent 4 }}
 data:
-{{ (.Files.Glob "config/*.json").AsConfig | indent 2 }}
+{{- range $key, $value := .Values.configs }}
+  {{ $key }}: |-
+{{ $value | indent 4 }}
+{{- end }}
