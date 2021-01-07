@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "openhab-dashboard.labels" . | nindent 4 }}
   annotations:
-    checksum/config/dashboard: {{ include (print $.Template.BasePath "/configmap-configs.yaml") . | sha256sum }}
-    checksum/config/nginx: {{ include (print $.Template.BasePath "/configmap-nginx.yaml") . | sha256sum }}
+    checksum/config-dashboard: {{ include (print $.Template.BasePath "/configmap-configs.yaml") . | sha256sum }}
+    checksum/config-nginx: {{ include (print $.Template.BasePath "/configmap-nginx.yaml") . | sha256sum }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
