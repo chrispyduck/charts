@@ -142,6 +142,16 @@ entries:
   openhab-dashboard:
   - apiVersion: v2
     appVersion: 0.2.0
+    created: "2021-01-07T01:26:11.340758671Z"
+    description: A touch friendly (and hopefully less buggy) OpenHAB dashboard based on Material UI and React
+    digest: bcc941ca6207e2984284f2404947957bedf5787285bfa3ff010e0e1ee0dffe78
+    name: openhab-dashboard
+    type: application
+    urls:
+    - https://github.com/chrispyduck/charts/releases/download/openhab-dashboard-0.2.2/openhab-dashboard-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
+    appVersion: 0.2.0
     created: "2021-01-07T01:06:55.040589906Z"
     description: A touch friendly (and hopefully less buggy) OpenHAB dashboard based on Material UI and React
     digest: 80109590431482c965e9d2f06e2e5b9c6fce93d887f80650b7aaa89f8c77b2c4
