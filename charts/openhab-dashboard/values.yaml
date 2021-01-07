@@ -2,9 +2,9 @@ replicaCount: 1
 
 image:
   repository: xtrachrispyduck/openhab-dashboard
-  pullPolicy: IfNotPresent
+  pullPolicy: Always #IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: main
 
 imagePullSecrets: []
 nameOverride: ""
@@ -24,15 +24,10 @@ podAnnotations: {}
 podSecurityContext: {}
 
 securityContext:
-  capabilities:
-    drop:
-    - ALL
   readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 ingress:
@@ -50,11 +45,11 @@ ingress:
 
 resources:
   limits:
-    cpu: 10m
-    memory: 16Mi
-  requests:
-    cpu: 10m
+    cpu: 800m
     memory: 32Mi
+  requests:
+    cpu: 100m
+    memory: 16Mi
 
 autoscaling:
   enabled: false
