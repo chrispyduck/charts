@@ -1,14 +1,14 @@
 # the service configuration
 configuration: 
   device:
-    name: my-device
-    friendlyName: Some random raspberry pi device
+    name: pi-livingroom
+    friendlyName: Living Room Raspberry Pi Display
     mqtt:
       client:
         host: mqtt
         port: 1883
-        username: my-device
-        password: sample
+        username: username
+        password: password
   sensors:
   - type: i2c
     model: AHT20
@@ -16,8 +16,8 @@ configuration:
     print: false
     configuration: 
       busNumber: 1
+  logLevel: silly
 
-# a list of hardware devices to map to the container
 hardware:
 - name: i2c-1
   path: /dev/i2c-1
@@ -54,7 +54,7 @@ securityContext:
 resources: {}
 
 nodeSelector:
-  kubernetes.io/hostname: my-node-with-sensors
+  kubernetes.io/hostname: pi-livingroom
 
 tolerations: []
 
